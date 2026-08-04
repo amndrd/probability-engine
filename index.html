@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fauxvegas — Casino gratuit</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<!-- ============ HOME SCREEN ============ -->
+<div id="homeScreen" class="home-screen">
+  <div class="money-rain" id="moneyRain" aria-hidden="true"></div>
+  <div class="pixel-transition" id="pixelTransition" aria-hidden="true"></div>
+
+  <button id="settingsBtnHome" class="icon-btn settings-corner pixel-icon" data-icon="gear" title="Réglages" aria-label="Réglages"></button>
+
+  <div class="home-content">
+    <div class="chip-stack" aria-hidden="true">
+      <span class="stack-chip c1"></span>
+      <span class="stack-chip c2"></span>
+      <span class="stack-chip c3"></span>
+      <span class="stack-chip c4"></span>
+    </div>
+
+    <h1 class="wordmark">Fauxvegas</h1>
+    <p class="tagline">T'es fauché·e. Il te reste $500. Deviens millionnaire.</p>
+
+    <div id="homeStatus" class="home-status hidden">
+      <span id="homeStatusText"></span>
+    </div>
+
+
+    <div class="home-menu">
+      <button id="playSoloBtn" class="duo-btn duo-btn--red duo-btn--lg">▶ Jouer en solo</button>
+      <button id="playMultiBtn" class="duo-btn duo-btn--outline"><span class="pixel-icon" data-icon="people"></span> Multijoueur <span class="soon-pill">bientôt</span></button>
+      <button id="playModesBtn" class="duo-btn duo-btn--outline"><span class="pixel-icon" data-icon="modes"></span> Autres modes <span class="soon-pill">bientôt</span></button>
+    </div>
+  </div>
+</div>
+
+<!-- ============ APP SCREEN ============ -->
+<div id="appScreen" class="app-screen hidden">
+
+  <header class="topbar">
+    <button id="homeBtn" class="icon-btn pixel-icon" data-icon="home" title="Accueil" aria-label="Retour à l'accueil"></button>
+
+    <div class="topbar-right">
+      <button id="settingsBtnApp" class="icon-btn pixel-icon" data-icon="gear" title="Réglages" aria-label="Réglages"></button>
+
+      <div class="balance-card">
+        <span class="balance-icon">$</span>
+        <div class="balance-text">
+          <span class="balance-label">Solde</span>
+          <span class="balance-amount">$<span id="balanceValue">0</span></span>
+        </div>
+        <button id="reloadBtn" class="reload-btn hidden" title="Recharger des dollars gratuits">+ Recharger</button>
+      </div>
+
+      <div class="level-block">
+        <div class="level-badge">Niveau <span id="levelNum">1</span></div>
+        <div class="progress-track">
+          <div class="progress-fill" id="progressFill"></div>
+          <div class="progress-label" id="progressLabel">0 / 0</div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <nav class="tabs">
+    <button class="tab-btn active" data-tab="games"><span class="pixel-icon" data-icon="controller"></span> Jeux</button>
+    <button class="tab-btn" data-tab="bank"><span class="pixel-icon" data-icon="bank"></span> Banque</button>
+    <button class="tab-btn" data-tab="shop"><span class="pixel-icon" data-icon="bag"></span> Boutique</button>
+    <button class="tab-btn" data-tab="challenges"><span class="pixel-icon" data-icon="target"></span> Défis</button>
+    <button class="tab-btn" data-tab="history"><span class="pixel-icon" data-icon="clock"></span> Historique</button>
+  </nav>
+
+  <main>
+
+    <!-- GAMES TAB -->
+    <section id="tab-games" class="tab-panel active">
+
+      <div id="carouselWrap" class="carousel-wrap">
+        <div class="carousel-viewport">
+          <div id="gameList" class="carousel-track">
+            <!-- cards injected by JS -->
+          </div>
+          <button id="carouselPrev" class="carousel-arrow carousel-arrow--prev" aria-label="Précédent">‹</button>
+          <button id="carouselNext" class="carousel-arrow carousel-arrow--next" aria-label="Suivant">›</button>
+        </div>
+      </div>
+
+      <div id="rouletteView" class="game-view hidden">
+        <button class="back-btn" data-back="games">← Retour aux jeux</button>
+
+        <div class="roulette-layout">
+          <div class="board-stage">
+            <div class="wheel-stage" id="wheelStage">
+              <div class="wheel-rim">
+                <div class="wheel-rotor" id="wheelRotor">
+                  <div class="wheel-labels" id="wheelLabels"></div>
+                </div>
+                <div class="ball-track" id="ballTrack">
+                  <div class="ball" id="ball"></div>
+                </div>
+                <div class="wheel-hub pixel-icon" data-icon="slots"></div>
+              </div>
+            </div>
+
+            <div class="board" id="board">
+              <!-- injected: zero, numbers grid, outside bets -->
+            </div>
+          </div>
+
+          <div class="controls-panel">
+            <div class="controls-status">
+              <div class="wheel-result" id="wheelResult">Placez vos mises !</div>
+              <div class="history" id="history"></div>
+            </div>
+
+            <div class="chip-selector" id="chipSelector"></div>
+
+            <div class="item-bar" id="itemBar"></div>
+
+            <div class="bet-bar">
+              <div class="bet-total">Mise totale : $<span id="betTotal">0</span></div>
+              <div class="action-row">
+                <button id="clearBetsBtn" class="duo-btn duo-btn--outline">Effacer</button>
+                <button id="spinBtn" class="duo-btn duo-btn--red">Lancer</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="comingSoonView" class="game-view hidden">
+        <button class="back-btn" data-back="games">← Retour aux jeux</button>
+        <div class="coming-soon">
+          <div class="coming-soon-icon pixel-icon" data-icon="lock"></div>
+          <h2 id="comingSoonTitle"></h2>
+          <p id="comingSoonText"></p>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- BANK TAB -->
+    <section id="tab-bank" class="tab-panel">
+      <h2>La Banque</h2>
+      <p class="muted">Atteins l'objectif du niveau, puis viens valider ici — tu gardes tout ton solde, palier compris.</p>
+      <div id="bankCard" class="bank-card"></div>
+    </section>
+
+    <!-- SHOP TAB -->
+    <section id="tab-shop" class="tab-panel">
+      <h2>Boutique — gadgets</h2>
+      <p class="muted">Des coups de pouce à usage unique pour pimenter tes mises. Aucun remboursement.</p>
+      <div id="shopGrid" class="shop-grid"></div>
+    </section>
+
+    <!-- CHALLENGES TAB -->
+    <section id="tab-challenges" class="tab-panel">
+      <h2>Défi du jour</h2>
+      <div id="challengeCard" class="challenge-card"></div>
+    </section>
+
+    <!-- HISTORY TAB -->
+    <section id="tab-history" class="tab-panel">
+      <h2>Historique des tirages</h2>
+      <p class="muted">Les 50 derniers numéros sortis à la roulette.</p>
+      <div id="historyGrid" class="history-grid"></div>
+    </section>
+
+  </main>
+</div>
+
+<div id="toast" class="toast hidden"></div>
+
+<div id="levelUpModal" class="modal hidden">
+  <div class="modal-card">
+    <div class="modal-icon pixel-icon" data-icon="trophy"></div>
+    <h2>Niveau supérieur !</h2>
+    <p id="levelUpText"></p>
+    <button id="levelUpCloseBtn" class="duo-btn duo-btn--red">Continuer</button>
+  </div>
+</div>
+
+<div id="millionaireModal" class="modal hidden">
+  <div class="modal-card modal-card--gold">
+    <div class="modal-icon pixel-icon" data-icon="moneybag"></div>
+    <h2>MILLIONNAIRE !</h2>
+    <p id="millionaireText"></p>
+    <button id="millionaireCloseBtn" class="duo-btn duo-btn--gold">Continuer à jouer</button>
+  </div>
+</div>
+
+<div id="settingsModal" class="modal hidden">
+  <div class="modal-card">
+    <button id="settingsCloseX" class="icon-btn modal-close-x pixel-icon" data-icon="closeX" aria-label="Fermer"></button>
+    <div class="modal-icon pixel-icon" data-icon="gear"></div>
+    <h2>Réglages</h2>
+    <div class="settings-row">
+      <span>Niveau actuel</span>
+      <strong id="settingsLevel">1</strong>
+    </div>
+    <div class="settings-row">
+      <span>Solde</span>
+      <strong id="settingsBalance">$0</strong>
+    </div>
+    <div class="settings-row">
+      <span>Son</span>
+      <button id="soundToggleBtn" class="duo-btn duo-btn--outline" type="button"></button>
+    </div>
+    <button id="resetProgressBtn" class="duo-btn duo-btn--outline duo-btn--danger">Réinitialiser la progression</button>
+    <p class="fine-print">Fauxvegas est un jeu 100% gratuit, sans argent réel — pour le plaisir, sans y laisser un centime.</p>
+  </div>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
