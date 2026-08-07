@@ -6,7 +6,7 @@
 <title>Fauxvegas — Casino gratuit</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -16,7 +16,7 @@
   <div class="money-rain" id="moneyRain" aria-hidden="true"></div>
   <div class="pixel-transition" id="pixelTransition" aria-hidden="true"></div>
 
-  <button id="settingsBtnHome" class="icon-btn settings-corner pixel-icon" data-icon="gear" title="Réglages" aria-label="Réglages"></button>
+  <button id="settingsBtnHome" class="icon-btn settings-corner icon-svg" data-icon="gear" title="Réglages" aria-label="Réglages"></button>
 
   <div class="home-content">
     <div class="chip-stack" aria-hidden="true">
@@ -36,8 +36,8 @@
 
     <div class="home-menu">
       <button id="playSoloBtn" class="duo-btn duo-btn--red duo-btn--lg">▶ Jouer en solo</button>
-      <button id="playMultiBtn" class="duo-btn duo-btn--outline"><span class="pixel-icon" data-icon="people"></span> Multijoueur <span class="soon-pill">bientôt</span></button>
-      <button id="playModesBtn" class="duo-btn duo-btn--outline"><span class="pixel-icon" data-icon="modes"></span> Autres modes <span class="soon-pill">bientôt</span></button>
+      <button id="playMultiBtn" class="duo-btn duo-btn--outline"><span class="icon-svg" data-icon="people"></span> Multijoueur</button>
+      <button id="playModesBtn" class="duo-btn duo-btn--outline"><span class="icon-svg" data-icon="modes"></span> Autres modes <span class="soon-pill">bientôt</span></button>
     </div>
   </div>
 </div>
@@ -46,10 +46,10 @@
 <div id="appScreen" class="app-screen hidden">
 
   <header class="topbar">
-    <button id="homeBtn" class="icon-btn pixel-icon" data-icon="home" title="Accueil" aria-label="Retour à l'accueil"></button>
+    <button id="homeBtn" class="icon-btn icon-svg" data-icon="home" title="Accueil" aria-label="Retour à l'accueil"></button>
 
     <div class="topbar-right">
-      <button id="settingsBtnApp" class="icon-btn pixel-icon" data-icon="gear" title="Réglages" aria-label="Réglages"></button>
+      <button id="settingsBtnApp" class="icon-btn icon-svg" data-icon="gear" title="Réglages" aria-label="Réglages"></button>
 
       <div class="balance-card">
         <span class="balance-icon">$</span>
@@ -60,6 +60,14 @@
         <button id="reloadBtn" class="reload-btn hidden" title="Recharger des dollars gratuits">+ Recharger</button>
       </div>
 
+      <div class="balance-card tickets-card">
+        <span class="balance-icon icon-svg" data-icon="ticket"></span>
+        <div class="balance-text">
+          <span class="balance-label">Tickets</span>
+          <span class="balance-amount"><span id="ticketsValue">0</span></span>
+        </div>
+      </div>
+
       <div class="level-block">
         <div class="level-badge">Niveau <span id="levelNum">1</span></div>
         <div class="progress-track">
@@ -67,15 +75,22 @@
           <div class="progress-label" id="progressLabel">0 / 0</div>
         </div>
       </div>
+
+      <div id="roomBadge" class="room-badge hidden">
+        <span class="icon-svg" data-icon="people"></span>
+        <span class="room-badge-code" id="roomBadgeCode"></span>
+        <span class="room-badge-players" id="roomBadgePlayers"></span>
+        <button id="roomLeaveBtn" class="room-leave-btn icon-svg" data-icon="closeX" type="button" title="Quitter la salle" aria-label="Quitter la salle"></button>
+      </div>
     </div>
   </header>
 
   <nav class="tabs">
-    <button class="tab-btn active" data-tab="games"><span class="pixel-icon" data-icon="controller"></span> Jeux</button>
-    <button class="tab-btn" data-tab="bank"><span class="pixel-icon" data-icon="bank"></span> Banque</button>
-    <button class="tab-btn" data-tab="shop"><span class="pixel-icon" data-icon="bag"></span> Boutique</button>
-    <button class="tab-btn" data-tab="challenges"><span class="pixel-icon" data-icon="target"></span> Défis</button>
-    <button class="tab-btn" data-tab="history"><span class="pixel-icon" data-icon="clock"></span> Historique</button>
+    <button class="tab-btn active" data-tab="games"><span class="icon-svg" data-icon="controller"></span> Jeux</button>
+    <button class="tab-btn" data-tab="bank"><span class="icon-svg" data-icon="bank"></span> Banque</button>
+    <button class="tab-btn" data-tab="shop"><span class="icon-svg" data-icon="bag"></span> Boutique</button>
+    <button class="tab-btn" data-tab="challenges"><span class="icon-svg" data-icon="target"></span> Défis</button>
+    <button class="tab-btn" data-tab="history"><span class="icon-svg" data-icon="clock"></span> Historique</button>
   </nav>
 
   <main>
@@ -106,7 +121,7 @@
                 <div class="ball-track" id="ballTrack">
                   <div class="ball" id="ball"></div>
                 </div>
-                <div class="wheel-hub pixel-icon" data-icon="slots"></div>
+                <div class="wheel-hub icon-svg" data-icon="suit-diamond"></div>
               </div>
             </div>
 
@@ -136,10 +151,333 @@
         </div>
       </div>
 
+      <div id="slotsView" class="game-view hidden">
+        <button class="back-btn" data-back="games">← Retour aux jeux</button>
+        <div class="simple-game-layout">
+          <div class="simple-game-stage">
+            <div class="reels-frame" id="slotsReels"><!-- 3 reels injected by JS --></div>
+            <div class="wheel-result" id="slotsResult">Choisis ta mise et tire les rouleaux !</div>
+          </div>
+          <div class="controls-panel">
+            <div class="chip-selector" id="slotsChipSelector"></div>
+            <div class="item-bar" id="slotsItemBar"></div>
+            <div class="bet-bar">
+              <div class="bet-total">Mise : $<span id="slotsBetValue">10</span></div>
+              <div class="action-row">
+                <button id="slotsSpinBtn" class="duo-btn duo-btn--red">Tirer</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="moneywheelView" class="game-view hidden">
+        <button class="back-btn" data-back="games">← Retour aux jeux</button>
+        <div class="simple-game-layout">
+          <div class="simple-game-stage">
+            <div class="spin-wheel-stage" id="moneywheelStage">
+              <div class="spin-wheel-pointer"></div>
+              <div class="spin-wheel-rotor" id="moneywheelRotor">
+                <div class="spin-wheel-labels" id="moneywheelLabels"></div>
+              </div>
+            </div>
+            <div class="wheel-result" id="moneywheelResult">Choisis un multiplicateur, mise, puis lance !</div>
+          </div>
+          <div class="controls-panel">
+            <div class="segment-picker" id="moneywheelPicker"></div>
+            <div class="chip-selector" id="moneywheelChipSelector"></div>
+            <div class="item-bar" id="moneywheelItemBar"></div>
+            <div class="bet-bar">
+              <div class="bet-total">Mise : $<span id="moneywheelBetValue">10</span></div>
+              <div class="action-row">
+                <button id="moneywheelSpinBtn" class="duo-btn duo-btn--red">Lancer</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="wheeloffortuneView" class="game-view hidden">
+        <button class="back-btn" data-back="games">← Retour aux jeux</button>
+        <div class="simple-game-layout">
+          <div class="simple-game-stage">
+            <div class="spin-wheel-stage" id="wheeloffortuneStage">
+              <div class="spin-wheel-pointer"></div>
+              <div class="spin-wheel-rotor" id="wheeloffortuneRotor">
+                <div class="spin-wheel-labels" id="wheeloffortuneLabels"></div>
+              </div>
+            </div>
+            <div class="wheel-result" id="wheeloffortuneResult">Mise, puis laisse faire le hasard !</div>
+          </div>
+          <div class="controls-panel">
+            <div class="chip-selector" id="wheeloffortuneChipSelector"></div>
+            <div class="item-bar" id="wheeloffortuneItemBar"></div>
+            <div class="bet-bar">
+              <div class="bet-total">Mise : $<span id="wheeloffortuneBetValue">10</span></div>
+              <div class="action-row">
+                <button id="wheeloffortuneSpinBtn" class="duo-btn duo-btn--red">Lancer</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="blackjackView" class="game-view hidden">
+        <button class="back-btn" data-back="games">← Retour aux jeux</button>
+        <div class="simple-game-layout">
+          <div class="simple-game-stage">
+            <div class="table-hand">
+              <div class="hand-label">Croupier <span id="blackjackDealerTotal" class="hand-total"></span></div>
+              <div class="hand" id="blackjackDealerHand"></div>
+            </div>
+            <div class="wheel-result" id="blackjackResult">Place ta mise pour commencer.</div>
+            <div class="table-hand">
+              <div class="hand-label">Toi <span id="blackjackPlayerTotal" class="hand-total"></span></div>
+              <div class="hand" id="blackjackPlayerHand"></div>
+            </div>
+          </div>
+          <div class="controls-panel">
+            <div class="chip-selector" id="blackjackChipSelector"></div>
+            <div class="item-bar" id="blackjackItemBar"></div>
+            <div class="bet-bar">
+              <div class="bet-total">Mise : $<span id="blackjackBetValue">10</span></div>
+              <div class="action-row">
+                <button id="blackjackDealBtn" class="duo-btn duo-btn--red">Distribuer</button>
+                <button id="blackjackHitBtn" class="duo-btn duo-btn--outline hidden">Tirer</button>
+                <button id="blackjackStandBtn" class="duo-btn duo-btn--outline hidden">Rester</button>
+                <button id="blackjackDoubleBtn" class="duo-btn duo-btn--gold hidden">Doubler</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="baccaratView" class="game-view hidden">
+        <button class="back-btn" data-back="games">← Retour aux jeux</button>
+        <div class="simple-game-layout">
+          <div class="simple-game-stage">
+            <div class="table-hand">
+              <div class="hand-label">Banquier <span id="baccaratBankerTotal" class="hand-total"></span></div>
+              <div class="hand" id="baccaratBankerHand"></div>
+            </div>
+            <div class="wheel-result" id="baccaratResult">Choisis ton camp, mise, puis distribue.</div>
+            <div class="table-hand">
+              <div class="hand-label">Joueur <span id="baccaratPlayerTotal" class="hand-total"></span></div>
+              <div class="hand" id="baccaratPlayerHand"></div>
+            </div>
+          </div>
+          <div class="controls-panel">
+            <div class="segment-picker" id="baccaratPicker"></div>
+            <div class="chip-selector" id="baccaratChipSelector"></div>
+            <div class="item-bar" id="baccaratItemBar"></div>
+            <div class="bet-bar">
+              <div class="bet-total">Mise : $<span id="baccaratBetValue">10</span></div>
+              <div class="action-row">
+                <button id="baccaratDealBtn" class="duo-btn duo-btn--red">Distribuer</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="pokerView" class="game-view hidden">
+        <button class="back-btn" data-back="games">← Retour aux jeux</button>
+        <div class="simple-game-layout">
+          <div class="simple-game-stage">
+            <div class="hand" id="pokerHand"></div>
+            <div class="wheel-result" id="pokerResult">Mise, distribue, choisis tes cartes à garder.</div>
+          </div>
+          <div class="controls-panel">
+            <div class="chip-selector" id="pokerChipSelector"></div>
+            <div class="item-bar" id="pokerItemBar"></div>
+            <div class="bet-bar">
+              <div class="bet-total">Mise : $<span id="pokerBetValue">10</span></div>
+              <div class="action-row">
+                <button id="pokerDealBtn" class="duo-btn duo-btn--red">Distribuer</button>
+                <button id="pokerDrawBtn" class="duo-btn duo-btn--gold hidden">Tirer</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="crapsView" class="game-view hidden">
+        <button class="back-btn" data-back="games">← Retour aux jeux</button>
+        <div class="simple-game-layout">
+          <div class="simple-game-stage">
+            <div class="dice-row" id="crapsDice"></div>
+            <div class="wheel-result" id="crapsResult">Mise, puis lance les dés !</div>
+            <div class="hand-total" id="crapsPointLabel"></div>
+          </div>
+          <div class="controls-panel">
+            <div class="chip-selector" id="crapsChipSelector"></div>
+            <div class="item-bar" id="crapsItemBar"></div>
+            <div class="bet-bar">
+              <div class="bet-total">Mise : $<span id="crapsBetValue">10</span></div>
+              <div class="action-row">
+                <button id="crapsRollBtn" class="duo-btn duo-btn--red">Lancer les dés</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="crashView" class="game-view hidden">
+        <button class="back-btn" data-back="games">← Retour aux jeux</button>
+        <div class="simple-game-layout">
+          <div class="simple-game-stage">
+            <div class="crash-display" id="crashMultiplier">1.00x</div>
+            <div class="wheel-result" id="crashResult">Mise, puis lance la fusée !</div>
+          </div>
+          <div class="controls-panel">
+            <div class="chip-selector" id="crashChipSelector"></div>
+            <div class="item-bar" id="crashItemBar"></div>
+            <div class="bet-bar">
+              <div class="bet-total">Mise : $<span id="crashBetValue">10</span></div>
+              <div class="action-row">
+                <button id="crashLaunchBtn" class="duo-btn duo-btn--red">Lancer</button>
+                <button id="crashCashOutBtn" class="duo-btn duo-btn--gold hidden">Encaisser</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="dragontowerView" class="game-view hidden">
+        <button class="back-btn" data-back="games">← Retour aux jeux</button>
+        <div class="simple-game-layout">
+          <div class="simple-game-stage">
+            <div class="tower-rows" id="dragontowerRows"></div>
+            <div class="wheel-result" id="dragontowerResult">Grimpe la tour, étage par étage.</div>
+          </div>
+          <div class="controls-panel">
+            <div class="chip-selector" id="dragontowerChipSelector"></div>
+            <div class="item-bar" id="dragontowerItemBar"></div>
+            <div class="bet-bar">
+              <div class="bet-total">Mise : $<span id="dragontowerBetValue">10</span></div>
+              <div class="action-row">
+                <button id="dragontowerStartBtn" class="duo-btn duo-btn--red">Commencer</button>
+                <button id="dragontowerCashOutBtn" class="duo-btn duo-btn--gold hidden">Encaisser</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="minesweeperView" class="game-view hidden">
+        <button class="back-btn" data-back="games">← Retour aux jeux</button>
+        <div class="simple-game-layout">
+          <div class="simple-game-stage">
+            <div class="segment-picker" id="minesweeperMinePicker"></div>
+            <div class="mine-grid" id="minesweeperGrid"></div>
+            <div class="wheel-result" id="minesweeperResult">Choisis un nombre de mines, mise, puis commence.</div>
+          </div>
+          <div class="controls-panel">
+            <div class="chip-selector" id="minesweeperChipSelector"></div>
+            <div class="item-bar" id="minesweeperItemBar"></div>
+            <div class="bet-bar">
+              <div class="bet-total">Mise : $<span id="minesweeperBetValue">10</span></div>
+              <div class="action-row">
+                <button id="minesweeperStartBtn" class="duo-btn duo-btn--red">Commencer</button>
+                <button id="minesweeperCashOutBtn" class="duo-btn duo-btn--gold hidden">Encaisser</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="plinkoView" class="game-view hidden">
+        <button class="back-btn" data-back="games">← Retour aux jeux</button>
+        <div class="simple-game-layout">
+          <div class="simple-game-stage">
+            <div class="plinko-board">
+              <div class="plinko-pegs" id="plinkoPegs"></div>
+              <div class="plinko-ball hidden" id="plinkoBall"></div>
+              <div class="plinko-slots" id="plinkoSlots"></div>
+            </div>
+            <div class="wheel-result" id="plinkoResult">Mise, puis lâche la bille !</div>
+          </div>
+          <div class="controls-panel">
+            <div class="chip-selector" id="plinkoChipSelector"></div>
+            <div class="item-bar" id="plinkoItemBar"></div>
+            <div class="bet-bar">
+              <div class="bet-total">Mise : $<span id="plinkoBetValue">10</span></div>
+              <div class="action-row">
+                <button id="plinkoDropBtn" class="duo-btn duo-btn--red">Lâcher</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="kenoView" class="game-view hidden">
+        <button class="back-btn" data-back="games">← Retour aux jeux</button>
+        <div class="simple-game-layout">
+          <div class="simple-game-stage">
+            <div class="keno-grid" id="kenoGrid"></div>
+            <div class="hand-total" id="kenoPickCount">0 / 10</div>
+            <div class="wheel-result" id="kenoResult">Choisis 10 numéros, puis lance le tirage.</div>
+          </div>
+          <div class="controls-panel">
+            <div class="chip-selector" id="kenoChipSelector"></div>
+            <div class="item-bar" id="kenoItemBar"></div>
+            <div class="bet-bar">
+              <div class="bet-total">Mise : $<span id="kenoBetValue">10</span></div>
+              <div class="action-row">
+                <button id="kenoDrawBtn" class="duo-btn duo-btn--red">Tirer</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="penguincrossView" class="game-view hidden">
+        <button class="back-btn" data-back="games">← Retour aux jeux</button>
+        <div class="simple-game-layout">
+          <div class="simple-game-stage">
+            <div class="ice-path" id="penguincrossPath"></div>
+            <div class="wheel-result" id="penguincrossResult">Mise, puis avance sur la glace.</div>
+          </div>
+          <div class="controls-panel">
+            <div class="chip-selector" id="penguincrossChipSelector"></div>
+            <div class="item-bar" id="penguincrossItemBar"></div>
+            <div class="bet-bar">
+              <div class="bet-total">Mise : $<span id="penguincrossBetValue">10</span></div>
+              <div class="action-row">
+                <button id="penguincrossStartBtn" class="duo-btn duo-btn--red">Commencer</button>
+                <button id="penguincrossAdvanceBtn" class="duo-btn duo-btn--outline hidden">Avancer</button>
+                <button id="penguincrossCashOutBtn" class="duo-btn duo-btn--gold hidden">Encaisser</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="hiloView" class="game-view hidden">
+        <button class="back-btn" data-back="games">← Retour aux jeux</button>
+        <div class="simple-game-layout">
+          <div class="simple-game-stage">
+            <div class="hilo-value" id="hiloValue">7</div>
+            <div class="wheel-result" id="hiloResult">Mise, puis parie Plus Haut ou Plus Bas.</div>
+          </div>
+          <div class="controls-panel">
+            <div class="chip-selector" id="hiloChipSelector"></div>
+            <div class="item-bar" id="hiloItemBar"></div>
+            <div class="bet-bar">
+              <div class="bet-total">Mise : $<span id="hiloBetValue">10</span></div>
+              <div class="action-row">
+                <button id="hiloLowerBtn" class="duo-btn duo-btn--outline">Plus Bas</button>
+                <button id="hiloHigherBtn" class="duo-btn duo-btn--red">Plus Haut</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <div id="comingSoonView" class="game-view hidden">
         <button class="back-btn" data-back="games">← Retour aux jeux</button>
         <div class="coming-soon">
-          <div class="coming-soon-icon pixel-icon" data-icon="lock"></div>
+          <div class="coming-soon-icon icon-svg" data-icon="lock"></div>
           <h2 id="comingSoonTitle"></h2>
           <p id="comingSoonText"></p>
         </div>
@@ -150,7 +488,7 @@
     <!-- BANK TAB -->
     <section id="tab-bank" class="tab-panel">
       <h2>La Banque</h2>
-      <p class="muted">Atteins l'objectif du niveau, puis viens valider ici — tu gardes tout ton solde, palier compris.</p>
+      <p class="muted">Commence une journée de casino ici : joue à ton rythme, sans limite de temps, jusqu'à atteindre le quota du prêteur. Encaisse quand tu veux t'arrêter.</p>
       <div id="bankCard" class="bank-card"></div>
     </section>
 
@@ -179,28 +517,83 @@
 
 <div id="toast" class="toast hidden"></div>
 
-<div id="levelUpModal" class="modal hidden">
-  <div class="modal-card">
-    <div class="modal-icon pixel-icon" data-icon="trophy"></div>
-    <h2>Niveau supérieur !</h2>
-    <p id="levelUpText"></p>
-    <button id="levelUpCloseBtn" class="duo-btn duo-btn--red">Continuer</button>
+<div id="dayEndModal" class="modal hidden">
+  <div class="modal-card modal-card--gold">
+    <div class="modal-icon icon-svg" data-icon="check"></div>
+    <h2>Journée réussie !</h2>
+    <p id="dayEndText"></p>
+    <button id="dayEndCloseBtn" class="duo-btn duo-btn--gold">Continuer</button>
   </div>
 </div>
 
 <div id="millionaireModal" class="modal hidden">
   <div class="modal-card modal-card--gold">
-    <div class="modal-icon pixel-icon" data-icon="moneybag"></div>
+    <div class="modal-icon icon-svg" data-icon="moneybag"></div>
     <h2>MILLIONNAIRE !</h2>
     <p id="millionaireText"></p>
     <button id="millionaireCloseBtn" class="duo-btn duo-btn--gold">Continuer à jouer</button>
   </div>
 </div>
 
+<div id="finalChoiceModal" class="modal hidden">
+  <div class="modal-card modal-card--gold">
+    <div class="modal-icon icon-svg" data-icon="moneybag"></div>
+    <h2>La dette est remboursée</h2>
+    <p>Le prêteur te libère. Tu peux repartir tranquille — ou tenter un dernier coup pour doubler ce qu'il te reste.</p>
+    <div class="final-choice-row">
+      <button id="payDebtBtn" class="duo-btn duo-btn--good">Payer et arrêter</button>
+      <button id="doubleOrNothingBtn" class="duo-btn duo-btn--red">Double ou rien</button>
+    </div>
+  </div>
+</div>
+
+<div id="coinFlipModal" class="modal hidden">
+  <div class="modal-card">
+    <div class="coin-flip-coin" id="coinFlipCoin"></div>
+    <h2>Pile ou face...</h2>
+  </div>
+</div>
+
+<div id="endingModal" class="modal hidden">
+  <div class="modal-card">
+    <div class="modal-icon icon-svg" data-icon="trophy"></div>
+    <h2 id="endingTitle"></h2>
+    <p id="endingText"></p>
+    <button id="endingCloseBtn" class="duo-btn duo-btn--gold">Fermer</button>
+  </div>
+</div>
+
+<div id="multiplayerModal" class="modal hidden">
+  <div class="modal-card">
+    <button id="multiplayerCloseX" class="icon-btn modal-close-x icon-svg" data-icon="closeX" aria-label="Fermer"></button>
+    <div class="modal-icon icon-svg" data-icon="people"></div>
+    <h2>Jouer en multijoueur</h2>
+    <p class="fine-print">Tout le monde dans la même salle partage le même solde et les mêmes tickets — comme dans le jeu original.</p>
+
+    <div class="mp-tabs">
+      <button class="mp-tab-btn active" data-mp-tab="create" type="button">Créer une salle</button>
+      <button class="mp-tab-btn" data-mp-tab="join" type="button">Rejoindre</button>
+    </div>
+
+    <div id="mpCreatePanel" class="mp-panel">
+      <input id="mpCreateName" class="mp-input" type="text" placeholder="Ton pseudo" maxlength="16">
+      <button id="mpCreateBtn" class="duo-btn duo-btn--red" type="button">Créer la salle</button>
+    </div>
+
+    <div id="mpJoinPanel" class="mp-panel hidden">
+      <input id="mpJoinCode" class="mp-input mp-input--code" type="text" placeholder="Code de la salle" maxlength="6">
+      <input id="mpJoinName" class="mp-input" type="text" placeholder="Ton pseudo" maxlength="16">
+      <button id="mpJoinBtn" class="duo-btn duo-btn--red" type="button">Rejoindre</button>
+    </div>
+
+    <p id="mpError" class="mp-error hidden"></p>
+  </div>
+</div>
+
 <div id="settingsModal" class="modal hidden">
   <div class="modal-card">
-    <button id="settingsCloseX" class="icon-btn modal-close-x pixel-icon" data-icon="closeX" aria-label="Fermer"></button>
-    <div class="modal-icon pixel-icon" data-icon="gear"></div>
+    <button id="settingsCloseX" class="icon-btn modal-close-x icon-svg" data-icon="closeX" aria-label="Fermer"></button>
+    <div class="modal-icon icon-svg" data-icon="gear"></div>
     <h2>Réglages</h2>
     <div class="settings-row">
       <span>Niveau actuel</span>
@@ -214,11 +607,16 @@
       <span>Son</span>
       <button id="soundToggleBtn" class="duo-btn duo-btn--outline" type="button"></button>
     </div>
+    <div class="settings-row">
+      <span>Débloquer tous les jeux</span>
+      <button id="unlockAllToggleBtn" class="duo-btn duo-btn--outline" type="button"></button>
+    </div>
+    <p class="fine-print settings-hint">Pratique pour tester — n'affecte pas ton niveau ni ta progression.</p>
     <button id="resetProgressBtn" class="duo-btn duo-btn--outline duo-btn--danger">Réinitialiser la progression</button>
     <p class="fine-print">Fauxvegas est un jeu 100% gratuit, sans argent réel — pour le plaisir, sans y laisser un centime.</p>
   </div>
 </div>
 
-<script src="app.js"></script>
+<script type="module" src="js/main.js"></script>
 </body>
 </html>
