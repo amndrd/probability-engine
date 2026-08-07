@@ -26,9 +26,24 @@ Le mode solo fonctionne sans rien configurer. Le mode **multijoueur** (banque pa
 
 1. Va sur [console.firebase.google.com](https://console.firebase.google.com/) et connecte-toi avec n'importe quel compte Google.
 2. **"Ajouter un projet"** → donne-lui n'importe quel nom (ex. `fauxvegas`) → tu peux désactiver Google Analytics → **Créer le projet**.
-3. Dans le menu de gauche : **Build → Realtime Database → Créer une base de données** → choisis une région → démarre en **mode test** (lecture/écriture ouvertes le temps de développer — voir la note de sécurité ci-dessous avant de déployer le site publiquement).
-4. Retourne sur la page d'accueil du projet, clique sur l'icône **`</>`  (Web)** pour enregistrer une appli web → donne-lui un nom → Firebase affiche un objet `firebaseConfig`.
+3. Dans le menu de gauche : **Build → Realtime Database → Créer une base de données** → choisis une région → démarre en **mode test** (on resserre les règles à l'étape 7).
+4. Retourne sur la page d'accueil du projet, clique sur **"+ Ajouter une application"** → icône **Web `</>`** pour enregistrer une appli web → donne-lui un nom → Firebase affiche un objet `firebaseConfig`.
 5. Copie ces valeurs dans `js/firebaseConfig.js` (remplace chaque `TODO_REPLACE_ME`). Le champ `databaseURL` se trouve sur la page Realtime Database si Firebase ne l'a pas déjà rempli à l'étape 4.
-6. Recharge la page — le bouton "Multijoueur" de l'accueil permet maintenant de créer ou rejoindre une salle.
+6. **Build → Authentication → "Get started" → Sign-in method → active "Anonymous"**. Le site connecte chaque visiteur anonymement et silencieusement (aucun écran de connexion) pour que les règles ci-dessous puissent distinguer "quelqu'un qui utilise le site" d'un script qui tape l'API directement.
+7. **Build → Realtime Database → onglet Règles**, remplace le contenu par :
+   ```json
+   {
+     "rules": {
+       "rooms": {
+         "$roomId": {
+           ".read": "auth != null",
+           ".write": "auth != null"
+         }
+       }
+     }
+   }
+   ```
+   puis **Publier**.
+8. Recharge la page — le bouton "Multijoueur" de l'accueil permet maintenant de créer ou rejoindre une salle.
 
-**Sécurité** : le mode test laisse la base de données lisible/modifiable par quiconque connaît l'URL — très bien pour jouer entre amis qui n'ont que le code de salle, mais si ce site est un jour déployé publiquement, resserre les règles (Build → Realtime Database → Règles) avant d'y stocker quoi que ce soit qui te dérangerait de voir lu ou effacé par un inconnu.
+**Sécurité** : ces règles empêchent de lister/lire l'ensemble des salles (il faut connaître le code exact) et bloquent les scripts qui n'ont jamais chargé le site. Elles n'empêchent pas quelqu'un qui connaît un code de salle d'écrire n'importe quoi dans cette salle-là — suffisant pour un jeu d'argent virtuel entre amis, pas une vraie isolation par joueur. Si l'enjeu change un jour (comptes utilisateurs, argent réel, etc.), il faudra des règles par joueur et une validation de schéma en plus.

@@ -142,6 +142,9 @@ function describeRoomError(err) {
   if (err && err.message === 'ROOM_NOT_FOUND') {
     return 'Salle introuvable — vérifie le code avec la personne qui a créé la salle.';
   }
+  if (err && err.code === 'auth/operation-not-allowed') {
+    return "L'authentification anonyme n'est pas activée sur le projet Firebase (voir Build → Authentication → Sign-in method).";
+  }
   return 'Une erreur est survenue, réessaie dans un instant.';
 }
 

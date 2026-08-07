@@ -34,6 +34,7 @@ const ECONOMY_KEYS = [
 
 let fb = null; // { ref, set, update, remove, get, onValue, off }
 let db = null;
+let loadPromise = null;
 let roomId = null;
 let playerId = null;
 let playerName = null;
@@ -56,20 +57,39 @@ export function onRoomUpdate(callback) {
   onRoomChange = callback;
 }
 
+// Anonymous auth is required by the database rules (auth != null on
+// /rooms/$roomId) but stays invisible to the player — no login screen,
+// just a silent background sign-in so Firebase can tell "someone using
+// the site" apart from a bot hitting the REST API directly. Guarded by
+// loadPromise so two concurrent callers (e.g. a double-click) share one
+// in-flight init instead of racing two separate sign-ins.
 async function loadFirebase() {
   if (fb) return fb;
-  const [{ initializeApp }, database, { FIREBASE_CONFIG, isFirebaseConfigured }] = await Promise.all([
-    import(`https://www.gstatic.com/firebasejs/${FIREBASE_SDK_VERSION}/firebase-app.js`),
-    import(`https://www.gstatic.com/firebasejs/${FIREBASE_SDK_VERSION}/firebase-database.js`),
-    import('./firebaseConfig.js'),
-  ]);
-  if (!isFirebaseConfigured()) {
-    throw new Error('MISSING_CONFIG');
+  if (loadPromise) return loadPromise;
+  loadPromise = (async () => {
+    const [{ initializeApp }, database, auth, { FIREBASE_CONFIG, isFirebaseConfigured }] = await Promise.all([
+      import(`https://www.gstatic.com/firebasejs/${FIREBASE_SDK_VERSION}/firebase-app.js`),
+      import(`https://www.gstatic.com/firebasejs/${FIREBASE_SDK_VERSION}/firebase-database.js`),
+      import(`https://www.gstatic.com/firebasejs/${FIREBASE_SDK_VERSION}/firebase-auth.js`),
+      import('./firebaseConfig.js'),
+    ]);
+    if (!isFirebaseConfigured()) {
+      throw new Error('MISSING_CONFIG');
+    }
+    const app = initializeApp(FIREBASE_CONFIG);
+    db = database.getDatabase(app);
+    const authInstance = auth.getAuth(app);
+    if (!authInstance.currentUser) {
+      await auth.signInAnonymously(authInstance);
+    }
+    fb = database;
+    return fb;
+  })();
+  try {
+    return await loadPromise;
+  } finally {
+    loadPromise = null;
   }
-  const app = initializeApp(FIREBASE_CONFIG);
-  db = database.getDatabase(app);
-  fb = database;
-  return fb;
 }
 
 function economySnapshot() {
