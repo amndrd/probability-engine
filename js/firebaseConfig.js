@@ -27,13 +27,13 @@
    --------------------------------------------------------- */
 
 export const FIREBASE_CONFIG = {
-  apiKey: 'TODO_REPLACE_ME',
-  authDomain: 'TODO_REPLACE_ME',
-  databaseURL: 'TODO_REPLACE_ME',
-  projectId: 'TODO_REPLACE_ME',
-  storageBucket: 'TODO_REPLACE_ME',
-  messagingSenderId: 'TODO_REPLACE_ME',
-  appId: 'TODO_REPLACE_ME',
+  apiKey: 'AIzaSyB6nRe0oNA5exUQ4eivI7X3k-N9Kvrv0XA',
+  authDomain: 'fauxvegas-cf524.firebaseapp.com',
+  databaseURL: 'https://fauxvegas-cf524-default-rtdb.europe-west1.firebasedatabase.app',
+  projectId: 'fauxvegas-cf524',
+  storageBucket: 'fauxvegas-cf524.firebasestorage.app',
+  messagingSenderId: '1012685158797',
+  appId: '1:1012685158797:web:73b095d4bc0822064f65c4',
 };
 
 export function isFirebaseConfigured() {
