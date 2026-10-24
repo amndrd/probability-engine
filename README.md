@@ -10,7 +10,7 @@ Il faut servir le dossier via un petit serveur local, puis ouvrir l'URL `http://
 
 **Avec Python (déjà installé sur Mac) :**
 ```bash
-cd /Users/amandindardenne/Desktop/casino
+cd probability-engine   # le dossier du projet
 python3 -m http.server 8000
 ```
 puis ouvre [http://localhost:8000](http://localhost:8000) dans ton navigateur.
